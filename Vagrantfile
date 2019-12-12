@@ -1,5 +1,5 @@
 IMAGE_NAME = "bento/ubuntu-16.04"
-N = (ENV["KUBERNETES_NODE_COUNT"] || 5).to_i
+N = (ENV["KUBERNETES_NODE_COUNT"] || 1).to_i
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "192.168.50.10"
         master.vm.hostname = "k8s-master"
+        master.vm.network "forwarded_port", guest: 6443, host: 6443
         master.vm.provision "ansible" do |ansible|
             ansible.compatibility_mode = "2.0"
             ansible.playbook = "kubernetes-setup/master-playbook.yml"
