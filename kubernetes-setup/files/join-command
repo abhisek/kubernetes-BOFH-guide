@@ -1,2 +1,0 @@
-kubeadm join 192.168.50.10:6443 --token wsswg2.cqrd7kindxxc2abl     --discovery-token-ca-cert-hash sha256:c2d0370fcbb8a263e210b31236c9b50da0cfe32afd644cc466f3a78d6c9feea6 
-
