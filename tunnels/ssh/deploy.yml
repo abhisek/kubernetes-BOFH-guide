@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ssh-ingress-tunnel
+  name: ssh-ingress-tunnel
+  namespace: ssh-ingress-tunnel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ssh-ingress-tunnel
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ssh-ingress-tunnel
+    spec:
+      volumes:
+      - name: ssh-secret
+        secret:
+          secretName: ssh-private-key
+      containers:
+      - image: abh1sek/alpine-ssh-tunnel
+        name: alpine-ssh80
+        volumeMounts:
+        - name: ssh-secret
+          mountPath: /root/ssh_secret
+        env:
+        - name: SSH_SERVER
+          value: 199.247.18.228
+        - name: SSH_USER
+          value: root
+        - name: FWD_PORT
+          value: "80"
+        - name: SSH_PRIVATE_KEY
+          value: "/root/ssh_secret/ssh_private_key"
+      - image: abh1sek/alpine-ssh-tunnel
+        name: alpine-ssh443
+        volumeMounts:
+        - name: ssh-secret
+          mountPath: /root/ssh_secret
+        env:
+        - name: SSH_SERVER
+          value: 199.247.18.228
+        - name: SSH_USER
+          value: root
+        - name: FWD_PORT
+          value: "443"
+        - name: SSH_PRIVATE_KEY
+          value: "/root/ssh_secret/ssh_private_key"
