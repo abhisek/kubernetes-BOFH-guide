@@ -63,6 +63,16 @@ vagrant up k8s-node-2 --provision
 vagrant up k8s-node-3 --provision
 ```
 
+* Master cannot be re-provisioned if `kubeadm init` is already executed.
+* Nodes cannot be re-provisioned if `kubeadmin join` is already executed.
+
+For nodes, its easiest to tear down and re-created a single node:
+
+```
+vagrant destroy k8ds-node-1
+vagrant up k8s-node-1
+```
+
 ## Testing Cluster
 
 - [ ] Master access
@@ -71,7 +81,14 @@ vagrant up k8s-node-3 --provision
 - [ ] Pod to Service networking
 - [ ] Pod to external networking
 
+## Teardown Infrastructure
+
+```
+vagrant destroy
+```
+
 ## References
 
 * https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/
 * https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+* https://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/

@@ -1,5 +1,5 @@
 IMAGE_NAME = "bento/ubuntu-16.04"
-N = (ENV["KUBERNETES_NODE_COUNT"] || 1).to_i
+N = (ENV["KUBERNETES_NODE_COUNT"] || 2).to_i
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
