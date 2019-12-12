@@ -65,11 +65,11 @@ vagrant up k8s-node-3 --provision
 
 ## Testing Cluster
 
-[ ] Master access
-[ ] Component status (`kubectl get cs`)
-[ ] Pod to Pod networking
-[ ] Pod to Service networking
-[ ] Pod to external networking
+- [ ] Master access
+- [ ] Component status (`kubectl get cs`)
+- [ ] Pod to Pod networking
+- [ ] Pod to Service networking
+- [ ] Pod to external networking
 
 ## References
 
