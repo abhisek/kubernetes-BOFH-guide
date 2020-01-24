@@ -12,7 +12,6 @@ spec:
       app: ssh-ingress-tunnel
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: ssh-ingress-tunnel
     spec:
@@ -23,6 +22,7 @@ spec:
       containers:
       - image: abh1sek/alpine-ssh-tunnel
         name: alpine-ssh80
+        imagePullPolicy: Always
         volumeMounts:
         - name: ssh-secret
           mountPath: /root/ssh_secret
@@ -35,8 +35,18 @@ spec:
           value: "80"
         - name: SSH_PRIVATE_KEY
           value: "/root/ssh_secret/ssh_private_key"
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - |
+              nc -w5 -zv $SSH_SERVER $FWD_PORT
+          initialDelaySeconds: 30
+          periodSeconds: 30
       - image: abh1sek/alpine-ssh-tunnel
         name: alpine-ssh443
+        imagePullPolicy: Always
         volumeMounts:
         - name: ssh-secret
           mountPath: /root/ssh_secret
@@ -49,3 +59,13 @@ spec:
           value: "443"
         - name: SSH_PRIVATE_KEY
           value: "/root/ssh_secret/ssh_private_key"
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - |
+              nc -w5 -zv $SSH_SERVER $FWD_PORT
+          initialDelaySeconds: 30
+          periodSeconds: 30
+
