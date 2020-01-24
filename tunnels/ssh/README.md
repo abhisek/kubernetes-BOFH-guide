@@ -13,7 +13,19 @@ For this to work, remote SSH server must allow `GatewayPorts`. To do this:
 Generate SSH key pair
 
 ```
-ssh-keygen
+ssh-keygen -f my-key
+```
+
+Copy public key to your VPS for key based remote login
+
+```
+ssh-copy-id my-key.pub root@my.vps.addr
+```
+
+Test key based login
+
+```
+ssh -i my-key root@my.vps.addr
 ```
 
 Create namespace
@@ -27,7 +39,7 @@ Create secret with private key
 ```
 kubectl create secret generic \
   -n ssh-ingress-tunnel ssh-private-key \
-  --from-file=ssh_private_key=./id_rsa
+  --from-file=ssh_private_key=./my-key
 ```
 
 Create config map for SSH tunnel
@@ -35,5 +47,5 @@ Create config map for SSH tunnel
 ```
 kubectl create configmap -n ssh-ingress-tunnel ssh-ingress-config \
   --from-literal=SSH_USERNAME=root \
-  --from-literal=SSH_SERVER=199.247.18.228
+  --from-literal=SSH_SERVER=my.vps.addr
 ```
