@@ -1,5 +1,5 @@
 IMAGE_NAME = "bento/ubuntu-16.04"
-N = (ENV["KUBERNETES_NODE_COUNT"] || 2).to_i
+N = (ENV["KUBERNETES_NODE_COUNT"] || 5).to_i
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -35,6 +35,23 @@ Vagrant.configure("2") do |config|
                     node_ip: "192.168.50.#{i + 10}",
                 }
             end
+        end
+    end
+
+    config.vm.define "k8s-nfs" do |nfs|
+        nfs.vm.box = IMAGE_NAME
+        nfs.vm.provider "virtualbox" do |v|
+            v.cpus = 1
+            v.memory = 1024
+        end
+        nfs.vm.network "private_network", ip: "192.168.50.254"
+        nfs.vm.hostname = "k8s-nfs"
+        nfs.vm.provision "ansible" do |ansible|
+            ansible.compatibility_mode = "2.0"
+            ansible.playbook = "kubernetes-setup/nfs-playbook.yml"
+            ansible.extra_vars = {
+                node_ip: "192.168.50.254",
+            }
         end
     end
 end

@@ -50,6 +50,7 @@ spec:
               nc -w5 -zv $SSH_SERVER $FWD_PORT
           initialDelaySeconds: 30
           periodSeconds: 30
+          timeoutSeconds: 5
       - image: abh1sek/alpine-ssh-tunnel
         name: alpine-ssh443
         imagePullPolicy: Always
@@ -80,4 +81,5 @@ spec:
               nc -w5 -zv $SSH_SERVER $FWD_PORT
           initialDelaySeconds: 30
           periodSeconds: 30
+          timeoutSeconds: 5
 

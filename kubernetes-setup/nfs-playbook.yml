@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: install nfs server
+    action: apt pkg=nfs-kernel-server state=present update_cache=yes
+    tags:
+      -nfs
+
+  - name: install nfs client
+    action: apt pkg=nfs-common state=present
+    tags:
+      -nfs
+
+  - name: Creates directory
+    file:
+      path: /export
+      state: directory
+
+  - name: Configure exports
+    lineinfile:
+      path: /etc/exports
+      create: no
+      line: /export *(rw,fsid=0,no_subtree_check,sync)
+
+  - name: ensure nfs service is running (Ubuntu)
+    action: service name={{item}} state=started
+    tags:
+      - nfs
+    with_items:
+      - nfs-kernel-server
+
